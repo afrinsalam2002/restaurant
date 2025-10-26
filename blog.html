@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUNORIA - Blog</title>
+  <style>
+    :root {
+      --brand: #E6C2A1;
+      --bg: #000;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family:Georgia, 'Times New Roman', Times, serif;
+      background: var(--bg);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* HEADER */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      background: rgba(17, 17, 17, 0.9);
+      border-bottom: 1px solid var(--brand);
+      z-index: 1000;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--brand);
+    }
+
+    /* Center Nav */
+    .nav-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+    .nav-links li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      transition: 0.3s;
+      position: relative;
+    }
+    .nav-links li a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0%;
+      height: 2px;
+      background: var(--brand);
+      transition: width 0.3s ease;
+    }
+    .nav-links li a:hover::after,
+    .nav-links li a.active::after {
+      width: 100%;
+    }
+
+    /* Book A Table Button */
+    .btn {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      background: var(--brand);
+      color: #000;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      max-width: max-content;
+    }
+    .btn .circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand);
+      font-size: 12px;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--brand);
+      background: none;
+      border: none;
+    }
+
+    /* Overlay */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      width: 100%;
+      height: 80vh;
+      background: rgba(0,0,0,0.95);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 25px;
+      z-index: 999;
+    }
+    .overlay.show {
+      display: flex;
+    }
+    .overlay li { list-style: none; }
+    .overlay li a {
+      font-size: 18px;
+      color: #fff;
+      text-decoration: none;
+    }
+    .overlay li a:hover {
+      color: var(--brand);
+    }
+
+      .btn {
+    background-color: #E6C2A1;
+    color: black;
+    border:2px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  .btn i {
+    color: black;
+    transition: all 0.3s ease;
+  }
+
+  .btn:hover {
+    background-color: black;
+    color: #E6C2A1;
+    border-color: #E6C2A1;
+  }
+
+  .btn:hover i {
+    color: #E6C2A1;
+  }
+
+
+    /* RESPONSIVE */
+    /* RESPONSIVE */
+@media (max-width: 900px) {
+  .nav-container { display: none; }
+  .btn { display: none; }
+
+  .hamburger { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: var(--brand);
+    background: none;
+    border: none;
+    width: 44px;   /* fixed clickable area */
+    height: 44px;
+    cursor: pointer;
+  }
+
+  header {
+    height: 64px;   /* more breathing room */
+    padding: 0 20px;
+  }
+  .logo { font-size: 20px; }
+
+  .overlay {
+    background-color: rgba(0,0,0,0.9);
+    top: 64px;   /* match header height */
+    height: 70vh;
+    gap: 50px;
+  }
+  .overlay li a {
+    font-size: 18px;
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 5px;
+  }
+  .overlay li a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 2px;
+    background: var(--brand);
+    transition: width 0.3s ease;
+  }
+  .overlay li a:hover::after { width: 100%; }
+
+  .overlay .btn { 
+    display: flex;
+  }
+  
+}
+
+/* DESKTOP NAVBAR FIX */
+/* DESKTOP NAVBAR FIX */
+@media (min-width: 901px) {
+  header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; /* logo | nav | button */
+    align-items: center;
+    padding: 0 40px;
+    height: 70px;
+  }
+
+  .logo { justify-self: start; }
+  .nav-container { justify-self: center; }
+  .btn { 
+    justify-self: end;
+    max-width: fit-content;
+    white-space: nowrap; /* prevents wrapping */
+  }
+}
+
+    /* Blog Hero */
+    .blog-hero {
+      height: 50vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                  url("imagess/blog.png") no-repeat center center/cover;
+      margin-top: 64px;
+    }
+    .blog-hero h1 {
+      font-size: 42px;
+      color: var(--brand);
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    }
+    .blog-hero p {
+      font-size: 18px;
+      color: #ccc;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Blog Grid (2 per row on desktop) */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+      padding: 50px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .blog-card {
+      border: 1px solid #373234;
+      padding: 20px;
+      background: #111;
+      border-radius: 10px;
+      transition: 0.3s ease;
+    }
+    .blog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .blog-header h3 {
+      font-size: 18px;
+      color: #fff;
+      margin: 0;
+      transition: color 0.3s;
+    }
+    .arrow {
+      font-size: 20px;
+      color: #fff;
+      transition: color 0.3s;
+    }
+    .blog-card p {
+      font-size: 14px;
+      color: #aaa;
+      margin: 8px 0 15px;
+    }
+    .blog-image {
+      border: 1px solid #373234;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .blog-image img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      display: block;
+    }
+    /* Hover Effect */
+    .blog-card:hover h3,
+    .blog-card:hover .arrow {
+      color: var(--brand);
+    }
+
+    /* Responsive (mobile: 1 column) */
+    @media (max-width: 768px) {
+      .blog-grid {
+        grid-template-columns: 1fr;
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">LUNORIA</div>
+    <div class="nav-container">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="blog.html" class="active">Blog</a></li>
+      </ul>
+    </div>
+    <a href="reservation.html" class="btn">
+      Book A Table <span class="circle">➝</span>
+    </a>
+    <button class="hamburger">☰</button>
+  </header>
+
+  <!-- OVERLAY MENU -->
+  <ul class="overlay">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+    <a href="reservation.html" class="btn">
+      Book A Table <span class="circle">➝</span>
+    </a>
+  </ul>
+
+  <!-- HERO -->
+  <section class="blog-hero">
+    <div>
+      <h1>Blog & Article</h1>
+      <p>Discover the stories behind every plate, every pour, & every perfect evening.</p>
+    </div>
+  </section>
+
+  <!-- BLOG GRID -->
+  <section class="blog-grid">
+    <!-- Blog 1 -->
+    <div class="blog-card">
+      <div class="blog-header">
+        <h3>Rare, Fine Wine: Inside Our Exclusive Collection</h3>
+        <span class="arrow">➝</span>
+      </div>
+      <p>25 April 2023 · 7 Min Read</p>
+      <div class="blog-image">
+        <img src="imagess/blg1.png" alt="Wine Collection">
+      </div>
+    </div>
+
+    <!-- Blog 2 -->
+    <div class="blog-card">
+      <div class="blog-header">
+        <h3>Beneath The Surface: A Deep Dive Into Seafood Experience</h3>
+        <span class="arrow">➝</span>
+      </div>
+      <p>21 May 2023 · 3 Min Read</p>
+      <div class="blog-image">
+        <img src="imagess/blg2.png" alt="Seafood">
+      </div>
+    </div>
+
+    <!-- Blog 3 -->
+    <div class="blog-card">
+      <div class="blog-header">
+        <h3>Burnt Sugar & Flame : The Allure of Fire-Kissed Desserts</h3>
+        <span class="arrow">➝</span>
+      </div>
+      <p>10 June 2023 · 5 Min Read</p>
+      <div class="blog-image">
+        <img src="imagess/blg3.png" alt="Chef Cooking">
+      </div>
+    </div>
+
+    <!-- Blog 4 -->
+    <div class="blog-card">
+      <div class="blog-header">
+        <h3>Spices & Silhouettes The Elegance of Indian Cuisine</h3>
+        <span class="arrow">➝</span>
+      </div>
+      <p>15 July 2023 · 4 Min Read</p>
+      <div class="blog-image">
+        <img src="imagess/blg4.png" alt="Pastry">
+      </div>
+    </div>
+
+    <!-- Blog 5 -->
+    <div class="blog-card">
+      <div class="blog-header">
+        <h3>Exploring the Elegance of Rare Japanese Cuisine</h3>
+        <span class="arrow">➝</span>
+      </div>
+      <p>22 August 2023 · 6 Min Read</p>
+      <div class="blog-image">
+        <img src="imagess/blg5.png" alt="Farm Fresh">
+      </div>
+    </div>
+
+    <!-- Blog 6 -->
+    <div class="blog-card">
+      <div class="blog-header">
+        <h3>Smoke & Seduction The Elevated Art of Barbecue </h3>
+        <span class="arrow">➝</span>
+      </div>
+      <p>05 September 2023 · 5 Min Read</p>
+      <div class="blog-image">
+        <img src="imagess/blg6.png" alt="Wine Dinner">
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const hamburger = document.querySelector(".hamburger");
+    const overlay = document.querySelector(".overlay");
+
+    hamburger.addEventListener("click", () => {
+      overlay.classList.toggle("show");
+    });
+    window.addEventListener("resize",() => {
+      if(window.innerWidth > 900){
+        overlay.classList.remove("show");
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+  
+
+
+
+<!-- RESERVE YOUR EXPERIENCE -->
+<section class="reservation">
+  <!-- Top Header -->
+  <div class="reservation-header">
+    <h2>— Reserve Your Experience</h2>
+    <p>Every course ascends toward heaven, &amp; time slows to rhythm of fine wine, &amp; unforgettable flavor</p>
+  </div>
+
+  <!-- Border Box -->
+  <div class="reservation-box">
+    <!-- Left Content -->
+    <div class="reservation-info">
+      <h3>An Evening Of Exquisite Taste,<br> Quiet Luxury</h3>
+      <div class="timings">
+        <p><strong class="highlight">Monday to Friday</strong><br>9:00AM – 10:00PM</p>
+        <p><strong class="highlight">Saturday and Sunday</strong><br>9:00AM – 12:00PM</p>
+      </div>
+      <p class="address highlight"><strong>Address</strong><br>Mr. Steve Harrington Triplicane</p>
+      
+      <a href="reservation.html" class="reservation-btn">
+        Make A Reservation 
+        <span class="circle-arrow">➝</span>
+      </a>
+    </div>
+
+    <!-- Right Image -->
+    <div class="reservation-image">
+      <img src="imagess/ress.png" alt="Restaurant ambience">
+    </div>
+  </div>
+</section>
+
+<style>
+  .reservation {
+    background:#000;
+    color:#fff;
+    padding:80px 50px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:30px;
+  }
+
+  /* Header top row */
+  .reservation-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    width:100%;
+    max-width:1200px;
+    margin-bottom:20px;
+    gap:20px;
+  }
+  .reservation-header h2 {
+    font-size:26px;
+    font-weight:700;
+    color:#E6C2A1;
+  }
+  .reservation-header p {
+    max-width:600px;
+    font-size:15px;
+    color:#ccc;
+  }
+
+  /* Border Box */
+  .reservation-box {
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:8px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    width:100%;
+    max-width:1200px;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .reservation-info {
+    padding:40px;
+  }
+
+  .reservation-info h3 {
+    font-size:32px;
+    font-weight:700;
+    margin-bottom:15px;
+    color:#E6C2A1;
+  }
+  .reservation-info .timings {
+    display:flex;
+    gap:40px;
+    margin-bottom:20px;
+    font-size:14px;
+    flex-wrap:wrap;
+  }
+  .reservation-info .address {
+    font-size:14px;
+    margin-bottom:25px;
+  }
+
+  /* Highlight color */
+  .highlight {
+    color:#E6C2A1;
+  }
+
+  /* Reservation button */
+  .reservation-btn {
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 22px;
+    background:#E6C2A1;
+    color:#000;
+    font-weight:600;
+    text-decoration:none;
+    border-radius:6px;
+    transition:all 0.3s ease;
+  }
+  .reservation-btn:hover {
+    background:#000;
+    color:#E6C2A1;
+    border:1px solid #E6C2A1;
+  }
+
+  /* Circle arrow */
+  .circle-arrow {
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:#000;
+    color:#fff;
+    font-size:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all 0.3s ease;
+  }
+  .reservation-btn:hover .circle-arrow {
+    background:#E6C2A1;
+    color:#000;
+  }
+
+  /* Image full side */
+  .reservation-image img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  /* Tablet view (keep 2-column, but header stacked on top) */
+  @media (max-width: 900px) and (min-width: 601px) {
+    .reservation-header {
+      flex-direction:column;
+      text-align:center;
+      align-items:center;
+    }
+    .reservation-box {
+      grid-template-columns:1fr 1fr; /* keep side by side */
+    }
+    .reservation-info {
+      text-align:left;
+    }
+  }
+
+  /* Phone view (stack everything) */
+  @media (max-width: 600px) {
+    .reservation-header {
+      flex-direction:column;
+      text-align:center;
+      align-items:center;
+    }
+    .reservation-box {
+      grid-template-columns:1fr;
+    }
+    .reservation-image {
+      order:2;
+    }
+    .reservation-info {
+      order:3;
+      padding:20px;
+      text-align:center;
+    }
+    .reservation-info h3 {
+      font-size:22px;
+    }
+  }
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  footer {
+    background: #000;
+    padding: 60px 50px;
+    border-top: 1px solid #222;
+    margin-top: 50px;
+  }
+
+  .footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  footer h3 {
+    color: #E6C2A1;
+    margin-bottom: 15px;
+  }
+
+  /* Quick Links */
+  .quick-links ul {
+    list-style: none;
+    width: 100%;
+    width: 500px;
+    padding: 0;
+    margin: 0;
+  }
+  .quick-links ul li {
+    margin: 12px 0;
+  }
+  .quick-links ul li a {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 10px 14px;
+    transition: all 0.3s ease;
+  }
+  .quick-links ul li a i {
+    color: #E6C2A1;
+    font-size: 14px;
+  }
+  .quick-links ul li a:hover {
+    border-color: #E6C2A1;
+    color: #E6C2A1;
+  }
+
+  /* Newsletter */
+  footer form {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  footer input {
+    padding: 10px;
+    border: 1px solid #E6C2A1;
+    background: #111;
+    color: #fff;
+    border-radius: 6px;
+    flex: 1;
+  }
+  footer button {
+    background: #E6C2A1;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  footer .socials {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    font-size: 20px;
+  }
+  footer .socials a {
+    color: #E6C2A1;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+  footer .socials a:hover {
+    color: #fff;
+  }
+
+  /* Copyright */
+  footer .copyright {
+    margin-top: 40px;
+    border-top: 1px solid #222;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    color: #777;
+    font-size: 14px;
+  }
+
+  /* ================== RESPONSIVE ================== */
+
+  /* Tablet (keep side by side: links left, newsletter right) */
+  @media (max-width: 900px) and (min-width: 601px) {
+    .footer-container {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .quick-links {
+      flex: 1;
+    }
+    .footer-container > div {
+      flex: 1;
+    }
+  }
+
+  /* Phone (stack: newsletter on top, quick links below) */
+  @media (max-width: 600px) {
+  .quick-links ul{
+    margin: 0 auto;
+    width: 180%;
+    max-width: 300%;
+  }
+  .quick-links ul li a {
+    justify-content: space-between;
+  }
+  }
+</style>
+
+<footer>
+  <div class="footer-container">
+    <!-- Quick Links -->
+    <div class="quick-links">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="index.html">Home <i class="fas fa-arrow-right"></i></a></li>
+        <li><a href="menu.html">Menu <i class="fas fa-arrow-right"></i></a></li>
+        <li><a href="about.html">About <i class="fas fa-arrow-right"></i></a></li>
+        <li><a href="reservation.html">Reservation <i class="fas fa-arrow-right"></i></a></li>
+      </ul>
+    </div>
+
+    <!-- Newsletter -->
+    <div>
+      <h3>Newsletter</h3>
+      <p>Sign up today and let us serve you unforgettable flavors and moments, right to your inbox!</p>
+      <form>
+        <input type="email" placeholder="Enter your email" required>
+        <button type="submit"><i class="fas fa-arrow-right"></i></button>
+      </form>
+      <div class="socials">
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-pinterest"></i></a>
+        <a href="#"><i class="fab fa-x-twitter"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="copyright">
+    <p>Copyrights are reserved © LUNORIA</p>
+    <p>Designed by <span style="color:#E6C2A1;">AFRIN</span></p>
+  </div>
+</footer>
+</body>
+</html>

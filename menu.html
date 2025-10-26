@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUNORIA - Menu</title>
+  <style>
+    body {
+      margin: 0;
+      font-family:Georgia, 'Times New Roman', Times, serif;
+      background: #000;
+      color: #fff;
+      padding-top: 90px; /* offset for fixed navbar */
+    }
+    /* Navbar */
+    /* --- Header (same as index.html) --- */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 64px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 30px;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  z-index: 1000;
+}
+header .logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #E6C2A1;
+  justify-self: start;
+}
+header nav {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+header nav a {
+  position: relative;
+  text-decoration: none;
+  color: #fff;
+  font-size: 16px;
+  padding: 6px 4px;
+}
+header nav a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #E6C2A1;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+header nav a:hover::after {
+  width: 60%;
+  left: 20%;
+}
+
+/* Book a Table button */
+.btn-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 18px;
+  background: #E6C2A1;
+  color: #000;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  justify-self: end;
+}
+.btn-top .btn-text { font-size: 13px; }
+.btn-top .btn-circle {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: #000;
+  display: flex; align-items: center; justify-content: center;
+  color: #E6C2A1;
+  font-size: 14px;
+}
+.btn-top:hover {
+  background: #000;
+  border-color: #E6C2A1;
+  color: #E6C2A1;
+}
+.btn-top:hover .btn-text { color: #E6C2A1; }
+.btn-top:hover .btn-circle { background: #000; color: #E6C2A1; }
+
+/* Hamburger */
+.menu-toggle {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #E6C2A1;
+  background: none;
+  border: none;
+  justify-self: end;
+}
+.mobile-btn { display: none; }
+
+/* Tablet view */
+@media (max-width: 900px) and (min-width: 601px) {
+  header { grid-template-columns: 1fr auto; }
+  header nav {
+    display: none;
+    position: absolute;
+    top: 64px; right: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0,0,0,0.85);
+    padding: 20px 0;
+  }
+  header nav.show { display: flex; }
+  header nav a { margin: 10px 0; font-size: 18px; }
+  header nav a::after { bottom: -4px; }
+  .menu-toggle { display: block; }
+  .desktop-btn { display: none; }
+  .mobile-btn { display: inline-flex; margin-top: 10px; }
+}
+
+/* Phone view */
+@media (max-width: 600px) {
+  header { grid-template-columns: 1fr auto; }
+  .menu-toggle { display: block; }
+  header nav {
+    display: none;
+    position: absolute;
+    top: 64px; right: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0,0,0,0.9);
+    padding: 20px 0;
+  }
+  header nav.show { display: flex; }
+  header nav a { margin: 8px 0; font-size: 16px; }
+  header nav a::after { bottom: -4px; }
+  .desktop-btn { display: none; }
+  .mobile-btn { display: inline-flex; margin-top: 8px; }
+}
+    /* Hero */
+    .menu-hero {
+      text-align: center;
+      padding: 60px 20px;
+      background: #111;
+      background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                         url("imagess/menu.png");
+      background-size: cover;
+      background-position: center;
+    }
+    .menu-hero h1 {
+      font-size: 40px;
+      color: #E6C2A1;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+    }
+    .menu-hero p {
+      font-size: 18px;
+      color: #ccc;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+    }
+
+    /* Menu Page Layout */
+    .menu-page {
+      display: flex;
+      padding: 50px;
+      gap: 30px;
+    }
+
+    /* Categories */
+    .menu-categories {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      position: sticky;
+      top: 100px;
+      height: max-content;
+    }
+    .menu-categories button {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #111;
+      color: #fff;
+      padding: 12px;
+      border: 1px solid #373234;
+      border-radius: 6px;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .menu-categories button img {
+      width: 32px;
+      height: 32px;
+    }
+    .menu-categories button.active,
+    .menu-categories button:hover {
+      background: #E6C2A1;
+      color: #000;
+    }
+
+    /* Menu Items */
+    .menu-items {
+      flex: 3;
+    }
+    .menu-items h2 {
+      font-size: 26px;
+      color: #E6C2A1;
+      margin: 40px 0 20px;
+      border-bottom: 1px solid #E6C2A1;
+      padding-bottom: 10px;
+    }
+
+    .menu-card {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      border: 1px solid #373234;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 20px;
+      gap: 20px;
+    }
+    .menu-card img {
+      width: 220px;
+      height: 230px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .menu-info {
+      flex: 1;
+    }
+    .menu-info h3 {
+      color: #E6C2A1;
+      margin: 0 0 6px;
+    }
+    .menu-info p {
+      color: #fff;
+      font-size: 14px;
+      margin: 5px 0 0;
+    }
+    .tags {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .tag {
+      border: 1px solid #373234;
+      color: #E6C2A1;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .price {
+      font-size: 20px;
+      font-weight: bold;
+      color: #E6C2A1;
+      margin-left: 15px;
+      white-space: nowrap;
+    }
+
+
+    
+ /* ---------- Tablet View (601px–899px) ---------- */
+@media (max-width: 899px) and (min-width: 601px) {
+  .menu-page {
+    flex-direction: column;
+    padding: 30px 20px;
+  }
+
+  .menu-categories {
+    position: relative;
+    top: auto;            /* take full width */
+  }
+
+  .menu-categories button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;              /* full width */
+    text-align: left;
+    transition: all 0.3s ease;
+  }
+
+  .menu-categories button:hover,
+  .menu-categories button.active {
+    background: var(--brand);
+    color: #000;
+  }
+
+  .menu-items {
+    flex: none;
+  }
+}
+
+/* ---------- Phone View (≤600px) ---------- */
+@media (max-width: 600px) {
+  .navbar{
+    background: rgba(17,17,17,0.9);
+  }
+  .menu-page {
+    padding: 20px 15px;
+  }
+  .menu-categories {
+    flex-direction: column;       /* vertical buttons */
+    align-items: stretch;
+  }
+  .menu-categories button {
+    flex: none;
+    width: 100%;
+  }
+  .menu-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+  }
+  .menu-card img {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 8px;
+  }
+  .menu-info {
+    width: 100%;
+  }
+  .tags {
+    justify-content: center;
+  }
+  .price {
+    margin: 8px 0 0;
+    text-align: center;
+  }
+}
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <!-- HEADER -->
+<header>
+  <div class="logo">LUNORIA</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="menu.html" class="active">Menu</a>
+    <a href="about.html">About</a>
+    <a href="blog.html">Blog</a>
+    <a href="reservation.html" class="btn-top mobile-btn">
+      <span class="btn-text">Book A Table</span>
+      <span class="btn-circle">→</span>
+    </a>
+  </nav>
+  <a href="reservation.html" class="btn-top desktop-btn">
+    <span class="btn-text">Book A Table</span>
+    <span class="btn-circle">→</span>
+  </a>
+  <button class="menu-toggle">☰</button>
+</header>
+
+  <!-- HERO -->
+  <section class="menu-hero">
+    <h1>Our Delicious Food Menu</h1>
+    <p>Exclusive Affair of Exceptional Flavors Where Every Bite Tells a Story,</p>
+  </section>
+
+  <!-- MENU -->
+  <section class="menu-page">
+    <!-- CATEGORIES -->
+    <div class="menu-categories">
+      <button data-target="starters" class="active"><img src="./imagess/icon1.png"> Starters Tease</button>
+      <button data-target="indian"><img src="./imagess/icon2.png"/> Regal Indian Heritage</button>
+      <button data-target="japanese"><img src="./imagess/icon3.png"/> Japanese Legacy</button>
+      <button data-target="italian"><img src="./imagess/icon4.png"> Italian Grandeur</button>
+      <button data-target="desserts"><img src="./imagess/icon5.png"/> Desserts Sweet Surrender</button>
+      <button data-target="drinks"><img src="./imagess/icon6.png"> Drinks Sip in Style</button>
+    </div>
+
+    <!-- MENU ITEMS -->
+    <div class="menu-items">
+      <!-- STARTERS -->
+      <div id="starters">
+        <h2>Starters</h2>
+        <div class="menu-card"><img src="./imagess/st1.png"><div class="menu-info"><div class="tags"><span class="tag">Signature Desserts</span><span class="tag">320 kcal</span></div><h3>Foie Gras Kiss</h3><p>Silky smooth terrine of ethically sourced foie gras, subtly sweet fig jam providing a delightful counterpoint, accompanied by thin slices of warm, buttered brioche.</p></div><div class="price">&#8377 198</div></div>
+        <div class="menu-card"><img src="./imagess/st2.png"><div class="menu-info"><div class="tags"><span class="tag">Signature Dish</span><span class="tag">200 kcal</span></div><h3>Caviar Pearls</h3><p>Delicate and glistening Osetra caviar, sustainably sourced, served atop a dollop of chilled crème fraîche with miniature, perfectly toasted blini.</p></div><div class="price">&#8377 265</div></div>
+        <div class="menu-card"><img src="./imagess/st3.png"><div class="menu-info"><div class="tags"><span class="tag">250 kcal</span></div><h3>Lobster Whisper</h3><p>Chilled, succulent lobster tail, gently poached to retain its sweetness, paired with a light and airy avocado mousse and a zesty citrus vinaigrette that awakens the palate.</p></div><div class="price">&#8377 222</div></div>
+        <div class="menu-card"><img src="./imagess/st4.png"><div class="menu-info"><div class="tags"><span class="tag">210 kcal</span></div><h3>Scallop Jewel</h3><p>Single, plump Hokkaido scallop, pan-seared to caramelised perfection, resting on a bed of fragrant truffle emulsion, garnished with delicate microgreens for a fresh finish.</P></div><div class="price">&#8377 228</div></div>
+      </div>
+
+      <!-- INDIAN -->
+      <div id="indian">
+        <h2>Regal Indian Heritage</h2>
+        <div class="menu-card"><img src="./imagess/ind1.png"><div class="menu-info"><div class="tags"><span class="tag">Signature Dish</span><span class="tag">680 kcal</span></div><h3>Saffron Biryani Royale</h3><P>Fragrant long-grain Basmati rice infused with saffron threads, layered with incredibly tender pieces of slow-cooked lamb and a symphony of aromatic Indian spices.</p></div><div class="price">&#8377 355</div></div>
+        <div class="menu-card"><img src="./imagess/ind2.png"><div class="menu-info"><div class="tags"><span class="tag">350 kcal</span></div><h3>Tandoori Prawn Éclat</h3><p>Majestic jumbo prawns marinated in a vibrant blend of spiced yogurt and aromatic herbs, charred to smoky perfection in our traditional tandoor oven. - Indian</p></div><div class="price">&#8377 349</div></div>
+        <div class="menu-card"><img src="./imagess/ind3.png"><div class="menu-info"><div class="tags"><span class="tag">450 kcal</span></div><h3>Black Truffle Dal</h3><p>Slow-cooked black lentils simmered overnight for ultimate creaminess, finished with a touch of butter and a delicate infusion of precious black truffle oil.</p></div><div class="price">&#8377 439</div></div>
+        <div class="menu-card"><img src="./imagess/ind4.png"><div class="menu-info"><div class="tags"><span class="tag">580 kcal</span></div><h3>Malai Kofta Velvet</h3><p>Exquisitely smooth dumplings of fresh paneer cheese and potato, simmered in a rich and creamy cashew nut gravy, subtly perfumed with cardamom and fenugreek.</p></div><div class="price">&#8377 432</div></div>
+      </div>
+
+      <!-- JAPANESE -->
+      <div id="japanese">
+        <h2>Japanese Legacy</h2>
+        <div class="menu-card"><img src="./imagess/j1.png"><div class="menu-info"><div class="tags"><span class="tag">Signature Dish</span><span class="tag">380 kcal</span></div><h3>Wagyu Tataki Umami</h3><p>Thinly sliced A5 grade Wagyu beef, quickly seared to retain its melt-in-your-mouth texture, served with a classic ponzu sauce, fresh ginger, and finely chopped scallions to enhance its rich umami flavor</p></div><div class="price">&#8377 542</div></div>
+        <div class="menu-card"><img src="./imagess/j2.png"><div class="menu-info"><div class="tags"><span class="tag">290 kcal</span></div><h3>Truffle Edamame Silk </h3><p>Young, tender edamame pods steamed and then tossed with fragrant white truffle oil and a dusting of delicate sea salt flakes. </p></div><div class="price">&#8377 430</div></div>
+        <div class="menu-card"><img src="./imagess/j3.png"><div class="menu-info"><div class="tags"><span class="tag">560 kcal</span></div><h3>King Crab Delight</h3><p>Succulent legs of Alaskan king crab, gently steamed to preserve their natural sweetness, accompanied by a delicate yuzu-infused butter and a sprinkle of Maldon sea salt. </p></div><div class="price">&#8377 428</div></div>
+        <div class="menu-card"><img src="./imagess/j4.png"><div class="menu-info"><div class="tags"><span class="tag">250 kcal</span></div><h3>Toro Sashimi Azure</h3><p>Exquisite slices of premium bluefin tuna belly, prized for its marbling and delicate flavor, served simply with freshly grated wasabi and artisanal soy sauce.</p></div><div class="price">&#8377 338</div></div>
+      </div>
+
+      <!-- ITALIAN -->
+      <div id="italian">
+        <h2>Italian Grandeur</h2>
+        <div class="menu-card"><img src="./imagess/it1.png"><div class="menu-info"><div class="tags"><span class="tag">Signature Dish</span><span class="tag">750 kcal</span></div><h3>Osso Buco Ambrosia </h3><p>Slowly braised veal shank, fall-off-the-bone tender, served atop a vibrant and aromatic saffron-infused risotto, finished with a sprinkle of fresh gremolata.</p></div><div class="price">&#8377 538</div></div>
+        <div class="menu-card"><img src="./imagess/it2.png"><div class="menu-info"><div class="tags"><span class="tag">420 kcal</span></div><h3>Lobster Ravioli Divine</h3><p>Delicate, handmade ravioli filled with sweet chunks of lobster, served in a rich and intensely flavored bisque reduction.</p></div><div class="price">&#8377 522</div></div>
+        <div class="menu-card"><img src="./imagess/it3.png"><div class="menu-info"><div class="tags"><span class="tag">300 kcal</span></div><h3>Burrata Cloud Caprese</h3><p>A cloud-like ball of creamy Apulian burrata, served with a colorful array of ripe heirloom tomatoes and drizzled with fragrant, cold-pressed basil oil. - Italian </p></div><div class="price">&#8377 430</div></div>
+        <div class="menu-card"><img src="./imagess/it4.png"><div class="menu-info"><div class="tags"><span class="tag">680 kcal</span></div><h3>Truffle Tagliatelle Dream </h3><p>Freshly made ribbons of tagliatelle pasta, lovingly tossed in a decadent and creamy sauce infused with the earthy aroma of black truffle, finished with shavings of aged Parmesan cheese.</p></div><div class="price">&#8377 318</div></div>
+      </div>
+
+      <!-- DESSERTS -->
+      <div id="desserts">
+        <h2>Dessert</h2>
+       
+        <div class="menu-card"><img src="./imagess/ds1.png"><div class="menu-info"><div class="tags"><span class="tag">Signature Dish</span><span class="tag">350 kcal</span></div><h3>Passion Soufflé Étoile</h3><p>A light and airy soufflé infused with the exotic tang of fresh passion fruit, served with a side of classic crème anglaise.</p></div><div class="price">&#8377 515</div></div>
+        <div class="menu-card"><img src="./imagess/ds2.png"><div class="menu-info"><div class="tags"><span class="tag">330 kcal</span></div><h3>Lemon Tart Lumière</h3><p>A bright and tangy lemon curd encased in a delicate, buttery pastry shell, adorned with crisp meringue kisses and a side of fresh berry compote. - Desserts.</p></div><div class="price">&#8377 414</div></div>
+        <div class="menu-card"><img src="./imagess/ds3.png"><div class="menu-info"><div class="tags"><span class="tag">390 kcal</span></div><h3>Pistachio Bliss Parfait </h3><p>Elegant layers of smooth pistachio mousse, crunchy almond biscotti crumble, and light Chantilly cream, creating a harmonious blend of textures and flavors.</p></div><div class="price">&#8377 612</div></div>
+        <div class="menu-card"><img src="./imagess/ds4.png"><div class="menu-info"><div class="tags"><span class="tag">410 kcal</span></div><h3>Chocolate Decadence Noir</h3><p>An intensely rich and warm dark chocolate lava cake with a molten center, served with a vibrant raspberry coulis and adorned with a delicate gold leaf. </p></div><div class="price">&#8377 516</div></div>
+      </div>
+
+      <!-- DRINKS -->
+      <div id="drinks">
+        <h2>Drinks</h2>
+        <div class="menu-card"><img src="./imagess/dk1.png"><div class="menu-info"><div class="tags"><span class="tag">Signature Drinks</span><span class="tag">150 kcal</span></div><h3>Grand Cru Elegance</h3><p>A meticulously selected Grand Cru Burgundy, Pinot Noir with complex layers of red fruit, earthy notes, and a silky finish</p></div><div class="price">&#8377 118</div></div>
+        <div class="menu-card"><img src="./imagess/dk2.png"><div class="menu-info"><div class="tags"><span class="tag">180 kcal</span></div><h3>Citrus Burst Refresher </h3><p>A vibrant and invigorating mix of freshly squeezed blood orange juice, zesty lime, and refreshing mint, topped with sparkling water.</p></div><div class="price">&#8377 225</div></div>
+        <div class="menu-card"><img src="./imagess/dk3.png"><div class="menu-info"><div class="tags"><span class="tag">200 kcal</span></div><h3>Midnight Velvet Martini</h3><p>Smooth vodka shaken with rich blackcurrant liqueur and a hint of fresh lime juice, finished with a swirl of mesmerizing edible glitter.</p></div><div class="price">&#8377 240</div></div>
+        <div class="menu-card"><img src="./imagess/dk4.png"><div class="menu-info"><div class="tags"><span class="tag">160 kcal</span></div><h3>Sparkling Elixir Royale</h3><p>Premium Champagne mingled with delicate elderflower liqueur and a scattering of fresh, ruby-red raspberries for a touch of elegance. </p></div><div class="price">&#8377  220</div></div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Scroll spy effect
+    const sections = document.querySelectorAll(".menu-items > div");
+    const buttons = document.querySelectorAll(".menu-categories button");
+
+    window.addEventListener("scroll", () => {
+      let current = "";
+      sections.forEach(sec => {
+        const secTop = sec.offsetTop - 150;
+        if (pageYOffset >= secTop) {
+          current = sec.getAttribute("id");
+        }
+      });
+      buttons.forEach(btn => {
+        btn.classList.remove("active");
+        if (btn.dataset.target === current) {
+          btn.classList.add("active");
+        }
+      });
+    });
+
+    // Smooth scroll on button click
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.getElementById(btn.dataset.target).scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      });
+    });
+
+
+    
+  const toggleBtn = document.querySelector(".menu-toggle");
+  const nav = document.querySelector("header nav");
+  toggleBtn.addEventListener("click", () => {
+    nav.classList.toggle("show");
+  });
+
+  </script>
+
+
+
+
+
+
+<!-- RESERVE YOUR EXPERIENCE -->
+<section class="reservation">
+  <!-- Top Header -->
+  <div class="reservation-header">
+    <h2>— Reserve Your Experience</h2>
+    <p>Every course ascends toward heaven, &amp; time slows to rhythm of fine wine, &amp; unforgettable flavor</p>
+  </div>
+
+  <!-- Border Box -->
+  <div class="reservation-box">
+    <!-- Left Content -->
+    <div class="reservation-info">
+      <h3>An Evening Of Exquisite Taste,<br> Quiet Luxury</h3>
+      <div class="timings">
+        <p><strong class="highlight">Monday to Friday</strong><br>9:00AM – 10:00PM</p>
+        <p><strong class="highlight">Saturday and Sunday</strong><br>9:00AM – 12:00PM</p>
+      </div>
+      <p class="address highlight"><strong>Address</strong><br>Mr. Steve Harrington Triplicane</p>
+      
+      <a href="reservation.html" class="reservation-btn">
+        Make A Reservation 
+        <span class="circle-arrow">➝</span>
+      </a>
+    </div>
+
+    <!-- Right Image -->
+    <div class="reservation-image">
+      <img src="imagess/ress.png" alt="Restaurant ambience">
+    </div>
+  </div>
+</section>
+
+<style>
+  .reservation {
+    background:#000;
+    color:#fff;
+    padding:80px 50px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:30px;
+  }
+
+  /* Header top row */
+  .reservation-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    width:100%;
+    max-width:1200px;
+    margin-bottom:20px;
+    gap:20px;
+  }
+  .reservation-header h2 {
+    font-size:26px;
+    font-weight:700;
+    color:#E6C2A1;
+  }
+  .reservation-header p {
+    max-width:600px;
+    font-size:15px;
+    color:#ccc;
+  }
+
+  /* Border Box */
+  .reservation-box {
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:8px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    width:100%;
+    max-width:1200px;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .reservation-info {
+    padding:40px;
+  }
+
+  .reservation-info h3 {
+    font-size:32px;
+    font-weight:700;
+    margin-bottom:15px;
+    color:#E6C2A1;
+  }
+  .reservation-info .timings {
+    display:flex;
+    gap:40px;
+    margin-bottom:20px;
+    font-size:14px;
+    flex-wrap:wrap;
+  }
+  .reservation-info .address {
+    font-size:14px;
+    margin-bottom:25px;
+  }
+
+  /* Highlight color */
+  .highlight {
+    color:#E6C2A1;
+  }
+
+  /* Reservation button */
+  .reservation-btn {
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 22px;
+    background:#E6C2A1;
+    color:#000;
+    font-weight:600;
+    text-decoration:none;
+    border-radius:6px;
+    transition:all 0.3s ease;
+  }
+  .reservation-btn:hover {
+    background:#000;
+    color:#E6C2A1;
+    border:1px solid #E6C2A1;
+  }
+
+  /* Circle arrow */
+  .circle-arrow {
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:#000;
+    color:#fff;
+    font-size:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all 0.3s ease;
+  }
+  .reservation-btn:hover .circle-arrow {
+    background:#E6C2A1;
+    color:#000;
+  }
+
+  /* Image full side */
+  .reservation-image img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  /* Tablet view (keep 2-column, but header stacked on top) */
+  @media (max-width: 900px) and (min-width: 601px) {
+    .reservation-header {
+      flex-direction:column;
+      text-align:center;
+      align-items:center;
+    }
+    .reservation-box {
+      grid-template-columns:1fr 1fr; /* keep side by side */
+    }
+    .reservation-info {
+      text-align:left;
+    }
+  }
+
+  /* Phone view (stack everything) */
+  @media (max-width: 600px) {
+    .reservation-header {
+      flex-direction:column;
+      text-align:center;
+      align-items:center;
+    }
+    .reservation-box {
+      grid-template-columns:1fr;
+    }
+    .reservation-image {
+      order:2;
+    }
+    .reservation-info {
+      order:3;
+      padding:20px;
+      text-align:center;
+    }
+    .reservation-info h3 {
+      font-size:22px;
+    }
+  }
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  footer {
+    background: #000;
+    padding: 60px 50px;
+    border-top: 1px solid #222;
+    margin-top: 50px;
+  }
+
+  .footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  footer h3 {
+    color: #E6C2A1;
+    margin-bottom: 15px;
+  }
+
+  /* Quick Links */
+  .quick-links ul {
+    list-style: none;
+    width: 100%;
+    width: 500px;
+    padding: 0;
+    margin: 0;
+  }
+  .quick-links ul li {
+    margin: 12px 0;
+  }
+  .quick-links ul li a {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 10px 14px;
+    transition: all 0.3s ease;
+  }
+  .quick-links ul li a i {
+    color: #E6C2A1;
+    font-size: 14px;
+  }
+  .quick-links ul li a:hover {
+    border-color: #E6C2A1;
+    color: #E6C2A1;
+  }
+
+  /* Newsletter */
+  footer form {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  footer input {
+    padding: 10px;
+    border: 1px solid #E6C2A1;
+    background: #111;
+    color: #fff;
+    border-radius: 6px;
+    flex: 1;
+  }
+  footer button {
+    background: #E6C2A1;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  footer .socials {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    font-size: 20px;
+  }
+  footer .socials a {
+    color: #E6C2A1;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+  footer .socials a:hover {
+    color: #fff;
+  }
+
+  /* Copyright */
+  footer .copyright {
+    margin-top: 40px;
+    border-top: 1px solid #222;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    color: #777;
+    font-size: 14px;
+  }
+
+  /* ================== RESPONSIVE ================== */
+
+  /* Tablet (keep side by side: links left, newsletter right) */
+  @media (max-width: 900px) and (min-width: 601px) {
+    .footer-container {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .quick-links {
+      flex: 1;
+    }
+    .footer-container > div {
+      flex: 1;
+    }
+  }
+
+  /* Phone (stack: newsletter on top, quick links below) */
+  @media (max-width: 600px) {
+  .quick-links ul{
+    margin: 0 auto;
+    width: 180%;
+    max-width: 300%;
+  }
+  .quick-links ul li a {
+    justify-content: space-between;
+  }
+  }
+</style>
+
+<footer>
+  <div class="footer-container">
+    <!-- Quick Links -->
+    <div class="quick-links">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="index.html">Home <i class="fas fa-arrow-right"></i></a></li>
+        <li><a href="menu.html">Menu <i class="fas fa-arrow-right"></i></a></li>
+        <li><a href="about.html">About <i class="fas fa-arrow-right"></i></a></li>
+        <li><a href="reservation.html">Reservation <i class="fas fa-arrow-right"></i></a></li>
+      </ul>
+    </div>
+
+    <!-- Newsletter -->
+    <div>
+      <h3>Newsletter</h3>
+      <p>Sign up today and let us serve you unforgettable flavors and moments, right to your inbox!</p>
+      <form>
+        <input type="email" placeholder="Enter your email" required>
+        <button type="submit"><i class="fas fa-arrow-right"></i></button>
+      </form>
+      <div class="socials">
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-pinterest"></i></a>
+        <a href="#"><i class="fab fa-x-twitter"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="copyright">
+    <p>Copyrights are reserved © LUNORIA</p>
+    <p>Designed by <span style="color:#E6C2A1;">AFRIN</span></p>
+  </div>
+</footer>
+</body>
+</html>

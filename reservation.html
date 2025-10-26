@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUNORIA Reservation</title>
+  <style>
+    :root {
+      --brand: #E6C2A1;
+      --bg: #000;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family:Georgia, 'Times New Roman', Times, serif;
+      background: var(--bg);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* HEADER */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      background: rgba(17, 17, 17, 0.9);
+      border-bottom: 1px solid var(--brand);
+      z-index: 1000;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--brand);
+    }
+
+    /* Center Nav */
+    .nav-container {
+      display: flex;
+      justify-content: center;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+    .nav-links li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      transition: 0.3s;
+      position: relative;
+    }
+    .nav-links li a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0%;
+      height: 2px;
+      background: var(--brand);
+      transition: width 0.3s ease;
+    }
+    .nav-links li a:hover::after,
+    .nav-links li a.active::after {
+      width: 100%;
+    }
+
+    /* Book A Table Button */
+    .btn {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      background: var(--brand);
+      color: #000;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      max-width: max-content;
+      border: 2px solid transparent;
+      transition: 0.3s;
+    }
+    .btn .circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand);
+      font-size: 12px;
+    }
+    .btn:hover {
+      background: #000;
+      color: var(--brand);
+      border-color: var(--brand);
+    }
+    .btn:hover .circle {
+      color: var(--brand);
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--brand);
+      background: none;
+      border: none;
+    }
+
+    /* Overlay */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      width: 100%;
+      height: 80vh;
+      background: rgba(0,0,0,0.95);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 25px;
+      z-index: 999;
+    }
+    .overlay.show { display: flex; }
+    .overlay li { list-style: none; }
+    .overlay li a {
+      font-size: 18px;
+      color: #fff;
+      text-decoration: none;
+    }
+    .overlay li a:hover { color: var(--brand); }
+
+    /* RESPONSIVE NAV */
+   /* RESPONSIVE NAV */
+@media (max-width: 900px) {
+  .nav-container { display: none; }
+  .btn { display: none; }
+
+  .hamburger { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;       /* larger icon */
+    color: var(--brand);
+    background: none;
+    border: none;
+    width: 40px;           /* fixed box so it won’t overflow */
+    height: 40px;
+    cursor: pointer;
+  }
+
+  header { 
+    height: 60px;          /* more breathing room */
+    padding: 0 20px;
+  }
+
+  .logo { font-size: 20px; }
+
+  .overlay {
+    background-color: rgba(0,0,0,0.9);
+    top: 60px;             /* match new header height */
+    height: 70vh;
+    gap: 40px;
+  }
+  .overlay li a {
+    font-size: 18px;
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 5px;
+  }
+  .overlay li a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 2px;
+    background: var(--brand);
+    transition: width 0.3s ease;
+  }
+  .overlay li a:hover::after { width: 100%; }
+  .overlay .btn { display: flex; }
+  
+}
+
+    /* DESKTOP NAVBAR FIX */
+    @media (min-width: 901px) {
+      header {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        padding: 0 30px;
+      }
+      .logo { justify-self: start; }
+      .nav-container { justify-self: center; }
+      .btn { justify-self: end; }
+
+        /* Copyright */
+  footer .copyright {
+    margin-top: 40px;
+    border-top: 1px solid #222;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    color: #777;
+    font-size: 14px;
+  }
+    }
+   
+
+    /* HERO SECTION */
+    .hero {
+      height: 50vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                  url("imagess/res1.png") no-repeat center center/cover;
+      padding: 0 20px;
+      margin-top: 64px;
+    }
+    .hero h1 {
+      font-size: 42px;
+      color: var(--brand);
+      margin-bottom: 15px;
+    }
+    .hero p {
+      font-size: 18px;
+      color: #ccc;
+      max-width: 700px;
+    }
+
+    /* RESERVATION BOX */
+    .reservation-box {
+      max-width: 1250px;
+      margin: 40px auto;
+      display: flex;
+      background: rgba(0,0,0,0.85);
+      border: 1px solid #373234;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .form-section { flex: 1; padding: 30px; }
+    .form-section h2 {
+      margin-bottom: 20px;
+      color: var(--brand);
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+    }
+    label { margin-bottom: 6px; font-size: 14px; color: #fff; }
+    input {
+      padding: 10px;
+      border: 1px solid #373234;
+      border-radius: 6px;
+      background: #000;
+      color: var(--brand);
+      font-size: 14px;
+    }
+    input:focus { outline: none; border-color: var(--brand); }
+    .row { display: flex; gap: 15px; }
+    .row .form-group { flex: 1; }
+    .submit-btn {
+      width: 100%;
+      background: var(--brand);
+      color: #000;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .submit-btn:hover {
+      background: #000;
+      color: var(--brand);
+      border: 1px solid var(--brand);
+    }
+
+    /* Right (image) */
+    .image-section {
+      flex: 1;
+      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+                  url("imagess/res2.png") no-repeat center center/cover;
+    }
+
+    /* INFO BOXES */
+    .info-boxes {
+      max-width: 1250px;
+      margin: 30px auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .info-box {
+      border: 1px solid #373234;
+      padding: 25px;
+      text-align: center;
+      background: rgba(0,0,0,0.8);
+      border-radius: 8px;
+    }
+    .info-box h3 { color: var(--brand); margin-bottom: 8px; font-size: 18px; }
+    .info-box p { color: #fff; font-size: 14px; }
+
+    /* Responsive content */
+    @media(max-width: 768px) {
+      .reservation-box { flex-direction: column; }
+      .image-section { height: 250px; }
+      .info-boxes { grid-template-columns: 1fr 1fr; }
+    }
+    @media(max-width: 500px) {
+      .info-boxes { grid-template-columns: 1fr; }
+ 
+  
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">LUNORIA</div>
+    <div class="nav-container">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="blog.html">Blog</a></li>
+      </ul>
+    </div>
+    <a href="reservation.html" class="btn">
+      Book A Table <span class="circle">➝</span>
+    </a>
+    <button class="hamburger">☰</button>
+  </header>
+
+  <!-- OVERLAY MENU -->
+  <ul class="overlay">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <a href="reservation.html" class="btn">Book A Table <span class="circle">➝</span></a>
+  </ul>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <h1>Reserve Your Experience</h1>
+    <p>Every course ascends toward heaven, & time slows to rhythm of fine wine, & unforgettable flavor</p>
+  </section>
+
+  <!-- RESERVATION FORM BOX -->
+  <div class="reservation-box">
+    <div class="form-section">
+      <h2>Dine With Us</h2>
+      <form>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="lunoria">
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="luna@lunoria.com">
+          </div>
+          <div class="form-group">
+            <label for="phone">Contact Number</label>
+            <input type="tel" id="phone" placeholder="+91 9876543210">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="seats">Number of Seats</label>
+          <input type="number" id="seats" placeholder="10" min="1" max="50">
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date">
+          </div>
+          <div class="form-group">
+            <label for="time">Time</label>
+            <input type="time" id="time">
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">Confirm My Reservation</button>
+      </form>
+    </div>
+    <div class="image-section"></div>
+  </div>
+
+  <!-- INFO BOXES -->
+  <section class="info-boxes">
+    <div class="info-box"><h3>Address</h3><p>7th Steve Street Triplicane, India</p></div>
+    <div class="info-box"><h3>Weekdays</h3><p>9:00AM - 10:00PM</p></div>
+    <div class="info-box"><h3>Weekends</h3><p>9:00AM - 12:00PM</p></div>
+    <div class="info-box"><h3>Contact</h3><p>(+91) 9876543210</p></div>
+  </section>
+
+
+  <script>
+    const hamburger = document.querySelector(".hamburger");
+    const overlay = document.querySelector(".overlay");
+    hamburger.addEventListener("click", () => {
+      overlay.classList.toggle("show");
+    });
+    window.addEventListener("resize", () => {
+      if(window.innerWidth > 900){
+        overlay.classList.remove("show");
+      }
+    });
+  </script>
+
+</body>
+</html>
